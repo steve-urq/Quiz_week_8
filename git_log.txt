@@ -1,0 +1,266 @@
+commit c3526f273e4d34b3480f6608f94997728953095b
+Author: Steve <stephen.urquhart@griffithuni.edu.au>
+Date:   Thu Sep 14 20:20:15 2023 +1000
+
+    q1
+
+diff --git a/climate.db b/climate.db
+index 7cd7279..44a7286 100644
+Binary files a/climate.db and b/climate.db differ
+diff --git a/climate_q1.py b/climate_q1.py
+index 7d83fb7..446bed5 100644
+--- a/climate_q1.py
++++ b/climate_q1.py
+@@ -1,8 +1,32 @@
++import sqlite3
+ import matplotlib.pyplot as plt
++
++conn = sqlite3.connect('climate.db')
++cursor = conn.cursor()
++
++cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='climate_data'")
++table_exists = cursor.fetchone()
++
++if not table_exists:
++   cursor.execute('''
++       CREATE TABLE climate_data (
++          Year INTEGER,
++          CO2 REAL,
++          Tempreature REAL
++       )
++   ''')
++
++   conn.commit()
++
++cursor.execute('SELECT Year, Co2, Tempreature FROM climate_data')
++data = cursor.fetchall()
+         
+-years = []
+-co2 = []
+-temp = []
++years = [row[0] for row in data]
++co2 = [row[1] for row in data]
++temp = [row[2] for row in data]
++
++
++conn.close()
+ 
+ plt.subplot(2, 1, 1)
+ plt.plot(years, co2, 'b--') 
+@@ -14,5 +38,7 @@ plt.subplot(2, 1, 2)
+ plt.plot(years, temp, 'r*-') 
+ plt.ylabel("Temp (C)") 
+ plt.xlabel("Year (decade)") 
+-plt.show() 
++#plt.show() 
+ plt.savefig("co2_temp_1.png") 
++
++plt.show()
+diff --git a/co2_temp_1.png b/co2_temp_1.png
+new file mode 100644
+index 0000000..9e98f4b
+Binary files /dev/null and b/co2_temp_1.png differ
+diff --git a/git_commands.rtf b/git_commands.rtf
+new file mode 100644
+index 0000000..75f76d4
+--- /dev/null
++++ b/git_commands.rtf
+@@ -0,0 +1,11 @@
++{\rtf1\ansi\ansicpg1252\cocoartf2709
++\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
++{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
++{\*\expandedcolortbl;;\csgray\c0;}
++\paperw11900\paperh16840\margl1440\margr1440\vieww12980\viewh15540\viewkind0
++\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
++
++\f0\fs22 \cf2 \CocoaLigature0 git clone https://github.com/steve-urq/Quiz_week_8.git\
++(base) stephenurquhart@Stephens-Air 2810ICT Software Technologies  % cd Quiz_week_8/\
++(base) stephenurquhart@Stephens-Air Quiz_week_8 % git add climate_q1.py climate.db\
++(base) stephenurquhart@Stephens-Air Quiz_week_8 % nano climate_q1.py}
+\ No newline at end of file
+
+commit 5fb67e4eb7b47f77fcd4a4aabe2758f3e2e7a5a9
+Author: Kevin <kevinfrom666@gmail.com>
+Date:   Wed Aug 30 16:41:34 2023 +1000
+
+    Update README.md
+
+diff --git a/README.md b/README.md
+index ded8ef3..510f02a 100644
+--- a/README.md
++++ b/README.md
+@@ -1,7 +1,7 @@
+ 
+ # WS8 Q1
+ 
+-Using sqlite3, load climate.db; and show data in climate.db. The database follows the below schema:
++Using sqlite3, load climate.db; and show the data. The database follows the below schema:
+ 
+ 
+ #### Table: ClimateData
+@@ -18,4 +18,4 @@ Using sqlite3, load climate.db; and show data in climate.db. The database follow
+ 
+ # WS8 Q2
+ 
+-Using Pandas, load climate.csv; and show data in climate.csv.
++Using Pandas, load climate.csv; and show the data.
+
+commit 1927190b3939b3c459cc877b8fa80b7e72d8761e
+Author: Kevin <kevinfrom666@gmail.com>
+Date:   Wed Aug 30 16:40:15 2023 +1000
+
+    Update climate_q2.py
+
+diff --git a/climate_q2.py b/climate_q2.py
+index 7860e94..f5bf3f9 100644
+--- a/climate_q2.py
++++ b/climate_q2.py
+@@ -16,5 +16,5 @@ plt.plot(years, temp, 'r*-')
+ plt.ylabel("Temp (C)") 
+ plt.xlabel("Year (decade)") 
+ plt.show() 
+-plt.savefig("co2_temp.png") 
++plt.savefig("co2_temp_2.png") 
+ 
+
+commit 651d64e75f813f96405e34fdef74f4beb2326e05
+Author: Kevin <kevinfrom666@gmail.com>
+Date:   Wed Aug 30 16:39:54 2023 +1000
+
+    Update climate_q1.py
+
+diff --git a/climate_q1.py b/climate_q1.py
+index 57aefa5..7d83fb7 100644
+--- a/climate_q1.py
++++ b/climate_q1.py
+@@ -15,4 +15,4 @@ plt.plot(years, temp, 'r*-')
+ plt.ylabel("Temp (C)") 
+ plt.xlabel("Year (decade)") 
+ plt.show() 
+-plt.savefig("co2_temp.png") 
++plt.savefig("co2_temp_1.png") 
+
+commit 336ec3cd082f0e9b88f5dd7f45eb8f7894cb7285
+Merge: 1f9eff2 921103c
+Author: 2810ICT-7810ICT-Assignment <kevinfrom666@gmail.com>
+Date:   Wed Aug 30 15:01:16 2023 +1000
+
+    ready
+
+commit 921103c53ce6c3b89a1a6fcca5f6b01e6a370f1a
+Author: Kevin <136687484+2810ICT-7810ICT-Assignment@users.noreply.github.com>
+Date:   Tue Jun 27 18:18:47 2023 +1000
+
+    Add files via upload
+
+diff --git a/README.md b/README.md
+new file mode 100644
+index 0000000..1af8e93
+--- /dev/null
++++ b/README.md
+@@ -0,0 +1,5 @@
++# WS8_B
++
++You can find the updated python file here.
++
++I have added some dummy data via Pandas and a CSV file for testing.
+diff --git a/climate.csv b/climate.csv
+new file mode 100644
+index 0000000..42500e4
+--- /dev/null
++++ b/climate.csv
+@@ -0,0 +1,8 @@
++Year,CO2,Temperature
++1950,250,14.1
++1960,265,15.5
++1970,272,16.3
++1980,260,18.1
++1990,300,17.3
++2000,320,19.1
++2010,389,20.2
+diff --git a/climate.db b/climate.db
+new file mode 100644
+index 0000000..7cd7279
+Binary files /dev/null and b/climate.db differ
+diff --git a/climate.py b/climate.py
+new file mode 100644
+index 0000000..f0b3898
+--- /dev/null
++++ b/climate.py
+@@ -0,0 +1,22 @@
++import matplotlib.pyplot as plt
++import pandas as pd
++
++climate = pd.read_csv("climate.csv")
++years = climate['Year'].to_numpy()
++co2 = climate['CO2'].to_numpy()
++temp = climate['Temperature'].to_numpy()
++
++
++plt.subplot(2, 1, 1)
++plot(years, co2, 'b--') 
++plt.title("Climate Data") 
++plt.ylabel("[CO2]") 
++plt.xlabel("Year (decade)") 
++
++plt.subplot(2, 1, 2)
++plot(years, temp, 'r*-') 
++plt.ylabel("Temp (C)") 
++plt.xlabel("Year (decade)") 
++plt.show() 
++plt.savefig("co2_temp.png") 
++
+
+commit 1f9eff2c890d3d750e3393e6db529082cbe5724e
+Author: Kevin <136687484+2810ICT-7810ICT-Assignment@users.noreply.github.com>
+Date:   Tue Jun 27 18:16:42 2023 +1000
+
+    Add files via upload
+
+diff --git a/README.md b/README.md
+new file mode 100644
+index 0000000..a4aecac
+--- /dev/null
++++ b/README.md
+@@ -0,0 +1,15 @@
++# WS8
++
++You can find the initial python file and the climate.db file here. The database follows the below schema:
++
++
++#### Table: ClimateData
++| Year      | CO2 | Temperature
++| ----------- | ----------- | ----------- |
++| 1950 | 250 | 14.1 |
++| 1960 | 265 | 15.5 |
++| 1970 | 272 | 16.3 |
++| 1980 | 260 | 18.1 |
++| 1990 | 300 | 17.3|
++| 2000 | 320 | 19.1 |
++| 2010 | 389 | 20.2 |
+diff --git a/climate.db b/climate.db
+new file mode 100644
+index 0000000..7cd7279
+Binary files /dev/null and b/climate.db differ
+diff --git a/climate.py b/climate.py
+new file mode 100644
+index 0000000..07085ed
+--- /dev/null
++++ b/climate.py
+@@ -0,0 +1,16 @@
++import matplotlib.pyplot as plt
++        
++years = []
++co2 = []
++temp = []
++
++
++plt.subplot(2, 1, 1)
++plt.plot(years, co2, 'b--') 
++plt.title("Climate Data") 
++plt.ylabel("[CO2]") 
++plt.xlabel("Year (decade)") 
++plt.show()
++
++
++
